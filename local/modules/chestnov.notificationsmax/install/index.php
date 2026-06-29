@@ -1,7 +1,6 @@
-<?
+<?php
 
 //подключаем основные классы для работы с модулем
-// Локализация
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Entity\Base;
 use Bitrix\Main\Loader;
@@ -36,40 +35,39 @@ class chestnov_notificationsmax extends CModule
         $this->MODULE_GROUP_RIGHTS = 'N';
         //название компании партнера предоставляющей модуль
         $this->PARTNER_NAME = Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_MODULE_PARTNER_NAME');
-        $this->PARTNER_URI = Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_MODULE_PARTNER_URL');;//адрес вашего сайта
+        //адрес вашего сайта
+        $this->PARTNER_URI = Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_MODULE_PARTNER_URL');
     }
 
     // Запускается при нажатии кнопки Установить на странице Модули административного раздела, осуществляет инсталляцию модуля.
-    public function DoInstall()
+    public function DoInstall(): void
     {
-
-        // Регистрация модуля
         ModuleManager::registerModule($this->MODULE_ID);
+        $this->InstallFile();
     }
 
     // Запускается при нажатии кнопки Удалить на странице Модули административного раздела, осуществляет деинсталляцию модуля.
-    public function DoUninstall()
+    public function DoUninstall(): void
     {
+        $this->UnInstallFiles();
         ModuleManager::unRegisterModule($this->MODULE_ID);
     }
 
 
-
     // Устнаовка файлов
-    public function InstallFile()
+    public function InstallFile(): void
     {
         // Копируем файлы административного интерфейса
         CopyDirFiles($_SERVER["DOCUMENT_ROOT"] . "/local/modules/chestnov.notificationsmax/install/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin", true, true);
 
     }
+
     // Удаление файлов
-    public function DoInstallFile(){
+    public function UnInstallFiles(): void
+    {
         // Удаляем файлы административного интерфейса
-        DeleteDirFiles($_SERVER["DOCUMENT_ROOT"] . "/local/modules/chestnov.notificationsmax/install/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin"); //
+        DeleteDirFiles($_SERVER["DOCUMENT_ROOT"] . "/local/modules/chestnov.notificationsmax/install/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
 
     }
 
 }
-
-
-?>
