@@ -2,19 +2,19 @@
 <?php
 
 $aTabs = [
-    [
-        'DIV' => 'edit1',
-        'TAB' => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_TAB_SETTINGS"),
-        'TITLE' => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_TAB_SETTINGS_TITLE"),
-    ]
+        [
+                'DIV' => 'edit1',
+                'TAB' => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_TAB_SETTINGS"),
+                'TITLE' => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_TAB_SETTINGS_TITLE"),
+        ]
 ];
 $tabControl = new CAdminTabControl("tabControl", $aTabs);
 ?>
 
 <form
-    method="post"
-    action="<?= $APPLICATION->GetCurPage() ?>?mid=<?= urlencode($mid) ?>&amp;lang=<?= LANGUAGE_ID ?>"
-    id="dataload"
+        method="post"
+        action="<?= $APPLICATION->GetCurPage() ?>?mid=<?= urlencode($mid) ?>&amp;lang=<?= LANGUAGE_ID ?>"
+        id="dataload"
 >
     <?= bitrix_sessid_post() ?>
 
