@@ -5,11 +5,12 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main\EventManager;
-use Chestnov\Notificationsmax\ElementHandler;
-
+use Bitrix\Main\Application;
+use Bitrix\Main\Entity;
+use Bitrix\Main\Loader;
 /*
  use Bitrix\Main\Entity\Base;
-use Bitrix\Main\Loader;
+
  */
 
 Loc::loadMessages(__FILE__);
@@ -57,7 +58,7 @@ class chestnov_notificationsmax extends CModule
         $this->InstallVariables();
         $this->InstallEvents();
         $this->InstallFiles();
-
+        $this->InstallDB();
     }
 
     // Запускается при нажатии кнопки Удалить на странице Модули административного раздела, осуществляет деинсталляцию модуля.
@@ -66,6 +67,7 @@ class chestnov_notificationsmax extends CModule
         $this->UnInstallVariables();
         $this->UnInstallEvents();
         $this->UnInstallFiles();
+        $this->UnInstallDB();
         ModuleManager::unRegisterModule($this->MODULE_ID);
     }
 
@@ -120,6 +122,27 @@ class chestnov_notificationsmax extends CModule
             '\\Chestnov\\Notificationsmax\\ElementHandler',
             'onAfterElementAdd'
         );
+    }
+
+    public function InstallDB()
+    {
+        $connection = Application::getConnection();
+        Loader::includeModule($this->MODULE_ID);
+        // Создаем таблицу, если ее нет
+        if (!$connection->isTableExists('b_chestnov_notificationsmax_log')) {
+            $entity = \Chestnov\Notificationsmax\LogTable::getEntity();
+            $entity->createDbTable();
+        }
+    }
+
+
+    public function UnInstallDB()
+    {
+        $connection = Application::getConnection();
+        // Удаляем таблицу при деинсталляции
+        if ($connection->isTableExists('b_chestnov_notificationsmax_log')) {
+            $connection->dropTable('b_chestnov_notificationsmax_log');
+        }
     }
 
 
