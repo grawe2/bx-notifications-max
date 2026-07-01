@@ -5,6 +5,9 @@ namespace Chestnov\Notificationsmax;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use Bitrix\Main\Localization\Loc;
+
+Loc::loadMessages(__FILE__);
 
 class ElementHandler
 {
@@ -61,12 +64,14 @@ class ElementHandler
                 $message['IMAGE'] = $_SERVER['DOCUMENT_ROOT'] . \CFile::GetPath($fields['PREVIEW_PICTURE_ID']);
             }
 
-            self::getSender()->send($message);
+            $res = self::getSender()->send($message);
 
+            Logger::save(Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_NAME'), (int)$fields['ID'], print_r($res, true));
 
         } catch (\Throwable $ex) {
+            Logger::save( Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_ERROR') , (int)$fields['ID'], $ex->getMessage());
             \CAdminMessage::ShowMessage([
-                'MESSAGE' => 'Не удалось отправить новость в MAX: ' . $ex->getMessage(),
+                'MESSAGE' => Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_ERROR') . $ex->getMessage(),
                 'TYPE' => 'ERROR',
             ]);
         }

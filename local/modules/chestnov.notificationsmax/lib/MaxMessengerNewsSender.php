@@ -8,7 +8,9 @@ use Bitrix\Main\Web\Http\Request;
 use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\Web\Uri;
 use Exception;
+use Bitrix\Main\Localization\Loc;
 
+Loc::loadMessages(__FILE__);
 class MaxMessengerNewsSender
 {
     private string $accessToken;
@@ -44,7 +46,7 @@ class MaxMessengerNewsSender
         $data = json_decode($response, true);
 
         if (empty($data['url'])) {
-            throw new Exception('Не получили upload URL: ' . $response);
+            throw new Exception(Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_URL_ERROR') . $response);
         }
 
         return $data['url'];
@@ -53,7 +55,7 @@ class MaxMessengerNewsSender
     public function uploadImage(string $imagePath): string
     {
         if (!file_exists($imagePath)) {
-            throw new Exception('Файл не найден: ' . $imagePath);
+            throw new Exception(Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_FILE_NOT_ERROR') . $imagePath);
         }
 
         $uploadUrl = $this->getUploadUrl();
@@ -61,7 +63,7 @@ class MaxMessengerNewsSender
         $resource = fopen($imagePath, 'r');
 
         if (!$resource) {
-            throw new Exception('Не удалось открыть файл');
+            throw new Exception(Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_FILE_OPEN_ERROR'));
         }
 
         $data = [
@@ -93,7 +95,7 @@ class MaxMessengerNewsSender
 
         if (empty($result['photos']) || !is_array($result['photos'])) {
             throw new Exception(
-                'Некорректный ответ upload: ' .
+                Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_UPLOAD_ERROR') .
                 (string)$response->getBody()
             );
         }
@@ -102,7 +104,7 @@ class MaxMessengerNewsSender
 
         if (empty($photo['token'])) {
             throw new Exception(
-                'Token картинки не найден: ' .
+                Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_TOKEN_ERROR_IMG') .
                 (string)$response->getBody()
             );
         }
@@ -132,7 +134,7 @@ class MaxMessengerNewsSender
             ];
         }
         if (!empty($message['URL'])) {
-            $message['BTN_NAME']=!empty($message['BTN_NAME'])?$message['BTN_NAME']:'Перейти на сайт';
+            $message['BTN_NAME']=!empty($message['BTN_NAME'])?$message['BTN_NAME']:Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_BTN_NAME');
             $attachments[] = [
                 'type' => 'inline_keyboard',
                 'payload' => [

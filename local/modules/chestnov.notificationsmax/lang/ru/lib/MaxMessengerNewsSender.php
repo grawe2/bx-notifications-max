@@ -1,0 +1,9 @@
+<?php
+$MESS['CHESTNOV_NOTIFICATIONSMAX_BTN_NAME'] = 'Перейти на сайт';
+$MESS['CHESTNOV_NOTIFICATIONSMAX_TOKEN_ERROR_IMG'] = 'Token картинки не найден:';
+$MESS['CHESTNOV_NOTIFICATIONSMAX_UPLOAD_ERROR'] = 'Некорректный ответ upload:';
+$MESS['CHESTNOV_NOTIFICATIONSMAX_FILE_OPEN_ERROR'] = 'Не удалось открыть файл';
+$MESS['CHESTNOV_NOTIFICATIONSMAX_FILE_NOT_ERROR'] = 'Файл не найден:';
+$MESS['CHESTNOV_NOTIFICATIONSMAX_URL_ERROR'] = 'Не получили upload URL:';
+
+
