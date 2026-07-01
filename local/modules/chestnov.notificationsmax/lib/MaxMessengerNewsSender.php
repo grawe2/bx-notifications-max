@@ -110,6 +110,12 @@ class MaxMessengerNewsSender
         return $photo['token'];
     }
 
+    /*
+     * $message['IMAGES']
+     * $message['URL']
+     * $message['TEXT']
+     */
+
     public function send(array $message): array
     {
         $attachments = [];

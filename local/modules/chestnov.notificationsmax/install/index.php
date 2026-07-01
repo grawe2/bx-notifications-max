@@ -2,15 +2,24 @@
 
 //подключаем основные классы для работы с модулем
 use Bitrix\Main\Config\Option;
-use Bitrix\Main\Entity\Base;
-use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
+
+/*
+ use Bitrix\Main\Entity\Base;
+use Bitrix\Main\Loader;
+ */
 
 Loc::loadMessages(__FILE__);
 
 class chestnov_notificationsmax extends CModule
 {
+    private const OPTIONS = [
+        'BOT_TOKEN',
+        'CHAT_ID',
+        'IBLOCK_ID'
+    ];
+
     public function __construct()
     {
         $arModuleVersion = [];
@@ -43,19 +52,39 @@ class chestnov_notificationsmax extends CModule
     public function DoInstall(): void
     {
         ModuleManager::registerModule($this->MODULE_ID);
-        $this->InstallFile();
+
+        $this->InstallVariables();
+        $this->InstallFiles();
+
     }
 
     // Запускается при нажатии кнопки Удалить на странице Модули административного раздела, осуществляет деинсталляцию модуля.
     public function DoUninstall(): void
     {
+        $this->UnInstallVariables();
         $this->UnInstallFiles();
         ModuleManager::unRegisterModule($this->MODULE_ID);
     }
 
 
+    //  Создание дефолтных настроек модуля
+    public function InstallVariables(): void
+    {
+        foreach (self::OPTIONS as $field) {
+            Option::set($this->MODULE_ID, $field, "");
+        }
+    }
+
+    // Удаление настроек модуля
+    public function UnInstallVariables(): void
+    {
+        foreach (self::OPTIONS as $field) {
+            Option::delete($this->MODULE_ID, ['name' => $field]);
+        }
+    }
+
     // Устнаовка файлов
-    public function InstallFile(): void
+    public function InstallFiles(): void
     {
         // Копируем файлы административного интерфейса
         CopyDirFiles($_SERVER["DOCUMENT_ROOT"] . "/local/modules/chestnov.notificationsmax/install/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin", true, true);
