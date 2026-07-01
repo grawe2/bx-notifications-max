@@ -7,7 +7,6 @@ if ($request->isPost() && check_bitrix_sessid()) {
 
     switch ($postData['action']) {
         case "save":
-            // 💾 SAVE SETTINGS
             foreach ($fields as $field) {
                 Bitrix\Main\Config\Option::set($mid, $field, $postData[$field] ?? "");
             }

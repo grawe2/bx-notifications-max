@@ -4,6 +4,8 @@
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
+use Bitrix\Main\EventManager;
+use Chestnov\Notificationsmax\ElementHandler;
 
 /*
  use Bitrix\Main\Entity\Base;
@@ -52,8 +54,8 @@ class chestnov_notificationsmax extends CModule
     public function DoInstall(): void
     {
         ModuleManager::registerModule($this->MODULE_ID);
-
         $this->InstallVariables();
+        $this->InstallEvents();
         $this->InstallFiles();
 
     }
@@ -62,6 +64,7 @@ class chestnov_notificationsmax extends CModule
     public function DoUninstall(): void
     {
         $this->UnInstallVariables();
+        $this->UnInstallEvents();
         $this->UnInstallFiles();
         ModuleManager::unRegisterModule($this->MODULE_ID);
     }
@@ -71,7 +74,7 @@ class chestnov_notificationsmax extends CModule
     public function InstallVariables(): void
     {
         foreach (self::OPTIONS as $field) {
-            Option::set($this->MODULE_ID, $field, "");
+            //       Option::set($this->MODULE_ID, $field, "");
         }
     }
 
@@ -98,5 +101,26 @@ class chestnov_notificationsmax extends CModule
         DeleteDirFiles($_SERVER["DOCUMENT_ROOT"] . "/local/modules/chestnov.notificationsmax/install/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
 
     }
+
+    public function InstallEvents(){
+        EventManager::getInstance()->registerEventHandler(
+            'iblock',
+            'OnAfterIBlockElementAdd',
+            $this->MODULE_ID,
+            '\\Chestnov\\Notificationsmax\\ElementHandler',
+            'onAfterElementAdd'
+        );
+    }
+
+    public function UnInstallEvents(){
+        EventManager::getInstance()->unRegisterEventHandler(
+            'iblock',
+            'OnAfterIBlockElementAdd',
+            $this->MODULE_ID,
+            '\\Chestnov\\Notificationsmax\\ElementHandler',
+            'onAfterElementAdd'
+        );
+    }
+
 
 }

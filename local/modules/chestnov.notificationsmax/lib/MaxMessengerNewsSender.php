@@ -112,6 +112,7 @@ class MaxMessengerNewsSender
 
     /*
      * $message['IMAGES']
+     * $message['BTN_NAME']
      * $message['URL']
      * $message['TEXT']
      */
@@ -131,6 +132,7 @@ class MaxMessengerNewsSender
             ];
         }
         if (!empty($message['URL'])) {
+            $message['BTN_NAME']=!empty($message['BTN_NAME'])?$message['BTN_NAME']:'Перейти на сайт';
             $attachments[] = [
                 'type' => 'inline_keyboard',
                 'payload' => [
@@ -138,7 +140,7 @@ class MaxMessengerNewsSender
                         [
                             [
                                 'type' => 'link',
-                                'text' => 'Посмотреть на сайте',
+                                'text' => $message['BTN_NAME'],
                                 'url' => $message['URL']
                             ]
                         ]
