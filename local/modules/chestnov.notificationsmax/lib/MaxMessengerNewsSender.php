@@ -2,15 +2,16 @@
 
 namespace Chestnov\Notificationsmax;
 
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Web\Http\Method;
 use Bitrix\Main\Web\Http\MultipartStream;
 use Bitrix\Main\Web\Http\Request;
 use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\Web\Uri;
 use Exception;
-use Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
+
 class MaxMessengerNewsSender
 {
     private string $accessToken;
@@ -134,7 +135,7 @@ class MaxMessengerNewsSender
             ];
         }
         if (!empty($message['URL'])) {
-            $message['BTN_NAME']=!empty($message['BTN_NAME'])?$message['BTN_NAME']:Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_BTN_NAME');
+            $message['BTN_NAME'] = !empty($message['BTN_NAME']) ? $message['BTN_NAME'] : Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_BTN_NAME');
             $attachments[] = [
                 'type' => 'inline_keyboard',
                 'payload' => [

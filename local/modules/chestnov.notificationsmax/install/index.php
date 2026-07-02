@@ -20,7 +20,8 @@ class chestnov_notificationsmax extends CModule
     private const OPTIONS = [
         'BOT_TOKEN',
         'CHAT_ID',
-        'IBLOCK_ID'
+        'IBLOCK_ID',
+        'ACTIVE'
     ];
 
     public function __construct()

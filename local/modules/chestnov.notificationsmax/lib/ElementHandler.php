@@ -14,12 +14,14 @@ class ElementHandler
     private static ?string $accessToken = null;
     private static ?string $chatId = null;
     private static ?int $iblockId = null;
+    private static ?string $active = null;
 
     public static function init()
     {
         self::$accessToken = Option::get('chestnov.notificationsmax', 'BOT_TOKEN');
         self::$chatId = Option::get('chestnov.notificationsmax', 'CHAT_ID');
         self::$iblockId = (int)Option::get('chestnov.notificationsmax', 'IBLOCK_ID');
+        self::$active = Option::get('chestnov.notificationsmax', 'ACTIVE');
     }
 
     private static function getDomain()
@@ -41,7 +43,7 @@ class ElementHandler
         try {
             self::init();
 
-            if (!self::$accessToken || !self::$chatId || !self::$iblockId) {
+            if (!self::$accessToken || !self::$chatId || !self::$iblockId || !self::$active) {
                 return;
             }
 
@@ -60,9 +62,11 @@ class ElementHandler
                 'URL' => $link
             ];
 
-            if (!empty($fields['PREVIEW_PICTURE_ID'])) {
+            if (!empty($fields['PREVIEW_PICTURE_ID']) && (int)$fields['PREVIEW_PICTURE_ID']>0) {
                 $message['IMAGE'] = $_SERVER['DOCUMENT_ROOT'] . \CFile::GetPath($fields['PREVIEW_PICTURE_ID']);
             }
+
+
 
             $res = self::getSender()->send($message);
 

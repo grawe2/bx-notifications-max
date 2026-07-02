@@ -1,9 +1,12 @@
 <?php
 
-$fields = ['BOT_TOKEN', 'CHAT_ID', 'IBLOCK_ID'];
+$fields = ['BOT_TOKEN', 'CHAT_ID', 'IBLOCK_ID', 'ACTIVE'];
 $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
 if ($request->isPost() && check_bitrix_sessid()) {
     $postData = $request->getPostList()->toArray();
+    if(empty($postData['ACTIVE'])){
+        $postData['ACTIVE']='';
+    }
 
     switch ($postData['action']) {
         case "save":
@@ -33,12 +36,12 @@ if ($request->isPost() && check_bitrix_sessid()) {
                 ]);
                 return;
             }
-            if ($result['HTTP_CODE'] >= 200 && $result['HTTP_CODE'] < 300){
+            if ($result['HTTP_CODE'] >= 200 && $result['HTTP_CODE'] < 300) {
                 CAdminMessage::ShowMessage([
                     "MESSAGE" => "Сообщение отправлено",
                     "TYPE" => "OK",
                 ]);
-            }else{
+            } else {
                 $response = json_decode($result['RESPONSE'], true);
                 CAdminMessage::ShowMessage([
                     "MESSAGE" => "Сообщение не отправлено",
@@ -49,6 +52,14 @@ if ($request->isPost() && check_bitrix_sessid()) {
                         'MESSAGE: ' . ($response['message'] ?? '-')
                 ]);
             }
+            break;
+        case "clear":
+            Bitrix\Main\Application::getConnection()
+                ->truncateTable(Chestnov\Notificationsmax\LogTable::getTableName());
+            CAdminMessage::ShowMessage([
+                "MESSAGE" => "Логи очишены",
+                "TYPE" => "OK",
+            ]);
             break;
         default:
             break;
