@@ -62,22 +62,15 @@ class ElementHandler
                 'URL' => $link
             ];
 
-            if (!empty($fields['PREVIEW_PICTURE_ID']) && (int)$fields['PREVIEW_PICTURE_ID']>0) {
+            if (!empty($fields['PREVIEW_PICTURE_ID']) && (int)$fields['PREVIEW_PICTURE_ID'] > 0) {
                 $message['IMAGE'] = $_SERVER['DOCUMENT_ROOT'] . \CFile::GetPath($fields['PREVIEW_PICTURE_ID']);
             }
 
-
-
             $res = self::getSender()->send($message);
-
             Logger::save(Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_NAME'), (int)$fields['ID'], print_r($res, true));
 
         } catch (\Throwable $ex) {
-            Logger::save( Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_ERROR') , (int)$fields['ID'], $ex->getMessage());
-            \CAdminMessage::ShowMessage([
-                'MESSAGE' => Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_ERROR') . $ex->getMessage(),
-                'TYPE' => 'ERROR',
-            ]);
+            Logger::save(Loc::getMessage('CHESTNOV_NOTIFICATIONSMAX_DEFAULT_EVENT_ERROR'), (int)$fields['ID'], $ex->getMessage());
         }
     }
 }
