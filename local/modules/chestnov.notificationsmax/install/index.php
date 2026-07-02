@@ -77,7 +77,7 @@ class chestnov_notificationsmax extends CModule
     public function InstallVariables(): void
     {
         foreach (self::OPTIONS as $field) {
-            //       Option::set($this->MODULE_ID, $field, "");
+           Option::set($this->MODULE_ID, $field, "");
         }
     }
 
