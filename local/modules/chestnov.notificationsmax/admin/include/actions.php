@@ -38,13 +38,13 @@ if ($request->isPost() && check_bitrix_sessid()) {
             }
             if ($result['HTTP_CODE'] >= 200 && $result['HTTP_CODE'] < 300) {
                 CAdminMessage::ShowMessage([
-                    "MESSAGE" => "Сообщение отправлено",
+                    "MESSAGE" => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_MESSAGE"),
                     "TYPE" => "OK",
                 ]);
             } else {
                 $response = json_decode($result['RESPONSE'], true);
                 CAdminMessage::ShowMessage([
-                    "MESSAGE" => "Сообщение не отправлено",
+                    "MESSAGE" => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_MESSAGE_ERROR"),
                     "TYPE" => "ERROR",
                     "DETAILS" =>
                         'HTTP_CODE: ' . $result['HTTP_CODE'] . '<br>' .
@@ -57,7 +57,7 @@ if ($request->isPost() && check_bitrix_sessid()) {
             Bitrix\Main\Application::getConnection()
                 ->truncateTable(Chestnov\Notificationsmax\LogTable::getTableName());
             CAdminMessage::ShowMessage([
-                "MESSAGE" => "Логи очишены",
+                "MESSAGE" => Bitrix\Main\Localization\Loc::getMessage("CHESTNOV_NOTIFICATIONSMAX_MESSAGE_LOG"),
                 "TYPE" => "OK",
             ]);
             break;
